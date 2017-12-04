@@ -5,11 +5,15 @@ namespace NeuralNet
 
     public class Neuron
     {
+        private readonly Func<double, double> _activationFunc;
         public double[] Weights { get; }
         public double Bias { get; set; }
+        public double[] LastInput { get; private set; }
+        public double LastOutput { get; private set; }
 
-        public Neuron(int inputCount)
+        public Neuron(int inputCount, Func<double, double> activationFunc)
         {
+            _activationFunc = activationFunc;
             Weights = InitialValues(inputCount);
             Bias = InitialValue();
         }
@@ -17,18 +21,10 @@ namespace NeuralNet
         public double Evaluate(double[] input)
         {
             var dotProduct = input.Zip(Weights, (inputValue, weight) => inputValue * weight).Sum();
-            return Sigmoid(dotProduct + Bias);
+            return _activationFunc(dotProduct + Bias);
         }
 
         private static double[] InitialValues(int count) => Enumerable.Range(0, count).Select(_ => InitialValue()).ToArray();
         private static double InitialValue() => 0.5;
-
-        private static double Sigmoid(double x) => 1 / (1 + Math.Exp(-x));
-
-        private static double SigmoidDerived(double x)
-        {
-            var s = Sigmoid(x);
-            return s * (1 - s);
-        }
     }
 }

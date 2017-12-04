@@ -42,6 +42,9 @@
   <ItemGroup>
     <Compile Include="Backpropagation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrainingConfiguration.cs" />
+    <Compile Include="TrainingSample.cs" />
+    <Compile Include="TrainingSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NeuralNet\NeuralNet.csproj">

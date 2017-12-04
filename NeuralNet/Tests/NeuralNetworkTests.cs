@@ -4,6 +4,7 @@
     using System.Linq;
     using FluentAssertions;
     using NeuralNet;
+    using Training;
     using Xunit;
 
     public class NeuralNetworkTests
@@ -11,7 +12,7 @@
         [Fact]
         public void When_Forward_Pass_Invoked_Then_Output_Is_Calculated_Correctly()
         {
-            var testObject = new NeuralNetwork(2, 2, 2);
+            var testObject = new NeuralNetwork(2, 2, 2, Backpropagation.Sigmoid);
             testObject.HiddenLayer.First().Weights[0] = 0.15;
             testObject.HiddenLayer.First().Weights[1] = 0.20;
             testObject.HiddenLayer.First().Bias = 0.35;

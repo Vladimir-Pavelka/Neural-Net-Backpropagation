@@ -1,5 +1,6 @@
 ﻿namespace NeuralNet
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -8,13 +9,12 @@
         public IEnumerable<Neuron> HiddenLayer { get; }
         public IEnumerable<Neuron> OutputLayer { get; }
 
-        public NeuralNetwork(int inputCount, int hiddenCount, int outputCount)
+        public NeuralNetwork(int inputCount, int hiddenCount, int outputCount, Func<double, double> neuronActivationFunc)
         {
 
-            HiddenLayer = Enumerable.Range(0, hiddenCount).Select(_ => new Neuron(inputCount)).ToList();
-            OutputLayer = Enumerable.Range(0, outputCount).Select(_ => new Neuron(hiddenCount)).ToList();
+            HiddenLayer = Enumerable.Range(0, hiddenCount).Select(_ => new Neuron(inputCount, neuronActivationFunc)).ToList();
+            OutputLayer = Enumerable.Range(0, outputCount).Select(_ => new Neuron(hiddenCount, neuronActivationFunc)).ToList();
         }
-
 
         public double[] ForwardPass(double[] input)
         {
