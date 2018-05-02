@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8AE5349B-485B-4905-8DFA-72E6E6DFA30F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NeuralNet</RootNamespace>
-    <AssemblyName>NeuralNet</AssemblyName>
+    <ProjectGuid>{3625B668-8FD4-43E7-B2E6-E59977BCC059}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Program</RootNamespace>
+    <AssemblyName>Program</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,11 +42,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivationFunctions.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="NeuralNetwork.cs" />
-    <Compile Include="Neuron.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NeuralNet\NeuralNet.csproj">
+      <Project>{8AE5349B-485B-4905-8DFA-72E6E6DFA30F}</Project>
+      <Name>NeuralNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Training\Training.csproj">
+      <Project>{6520D962-AFEB-44AC-828B-DF7E606BADE0}</Project>
+      <Name>Training</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

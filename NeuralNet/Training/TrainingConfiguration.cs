@@ -1,17 +1,16 @@
 ﻿namespace Training
 {
-    public partial class Backpropagation
+    public class TrainingConfiguration
     {
-        public class TrainingConfiguration
-        {
-            public double LearningRate { get; }
-            public double MaxEpoch { get; }
+        public double LearningRate { get; }
+        public int MaxEpoch { get; }
+        public double StopError { get; }
 
-            public TrainingConfiguration(double learningRate, double maxEpoch)
-            {
-                LearningRate = learningRate;
-                MaxEpoch = maxEpoch;
-            }
+        public TrainingConfiguration(double learningRate, int maxEpoch, double stopError)
+        {
+            LearningRate = learningRate;
+            MaxEpoch = maxEpoch;
+            StopError = stopError;
         }
     }
 }

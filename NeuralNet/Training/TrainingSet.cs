@@ -2,18 +2,20 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
-    public class TrainingSet : IEnumerable<TrainingSample>
+    public class TrainingSet : IReadOnlyCollection<TrainingSample>
     {
         private readonly IReadOnlyCollection<TrainingSample> _trainingSamples;
 
-        public TrainingSet(IEnumerable<TrainingSample> trainingSamples)
+        public TrainingSet(IReadOnlyCollection<TrainingSample> trainingSamples)
         {
-            _trainingSamples = trainingSamples.ToList();
+            _trainingSamples = trainingSamples;
         }
 
         public IEnumerator<TrainingSample> GetEnumerator() => _trainingSamples.GetEnumerator();
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public int Count => _trainingSamples.Count;
     }
 }

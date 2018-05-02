@@ -6,7 +6,8 @@ namespace NeuralNet
     public class Neuron
     {
         private readonly Func<double, double> _activationFunc;
-        public double[] Weights { get; }
+        private static readonly Random Random = new Random();
+        public double[] Weights { get; set; }
         public double Bias { get; set; }
         public double[] LastInput { get; private set; }
         public double LastOutput { get; private set; }
@@ -14,17 +15,22 @@ namespace NeuralNet
         public Neuron(int inputCount, Func<double, double> activationFunc)
         {
             _activationFunc = activationFunc;
-            Weights = InitialValues(inputCount);
+            Weights = InitialWeightValues(inputCount);
             Bias = InitialValue();
         }
 
         public double Evaluate(double[] input)
         {
             var dotProduct = input.Zip(Weights, (inputValue, weight) => inputValue * weight).Sum();
-            return _activationFunc(dotProduct + Bias);
+            var output = _activationFunc(dotProduct + Bias);
+
+            LastInput = input;
+            LastOutput = output;
+
+            return output;
         }
 
-        private static double[] InitialValues(int count) => Enumerable.Range(0, count).Select(_ => InitialValue()).ToArray();
-        private static double InitialValue() => 0.5;
+        private static double[] InitialWeightValues(int count) => Enumerable.Range(0, count).Select(_ => InitialValue()).ToArray();
+        private static double InitialValue() => Random.NextDouble();
     }
 }
