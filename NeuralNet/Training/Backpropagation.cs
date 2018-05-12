@@ -1,43 +1,35 @@
 ﻿namespace Training
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using NeuralNet;
 
     public class Backpropagation
     {
-        public static double TotalError(double[] ideal, double[] actual)
-            => ideal.Zip(actual, (i, a) => i - a)
-                .Select(diff => 0.5 * diff * diff)
-                .Sum();
-
-        public static double TotalError(NeuralNetwork net, TrainingSet set)
+        public static void Train(NeuralNetwork net, TrainingConfiguration config, TrainingSet trainingSet, IList<double> trainingProgress = null)
         {
-            var netOutputs = set.Select(x => net.ForwardPass(x.Input));
-            var trainingSampleErrors = set.Select(x => x.Ideal).Zip(netOutputs, TotalError);
-            return trainingSampleErrors.Sum() / set.Count;
-        }
-
-        public static void Train(NeuralNetwork net, TrainingConfiguration config, TrainingSet trainingSet)
-        {
-            Enumerable.Range(0, config.MaxEpoch).ForEach(epochNo =>
-                PerformTrainingEpoch(net, config, trainingSet));
+            Enumerable.Range(0, config.MaxEpoch)
+                .ForEach(epochNo =>
+                {
+                    PerformTrainingEpoch(net, config, trainingSet);
+                    var currentTotalError = ErrorFunctions.TotalError(net, trainingSet);
+                    trainingProgress?.Add(currentTotalError);
+                });
         }
 
         private static void PerformTrainingEpoch(NeuralNetwork net, TrainingConfiguration config, TrainingSet trainingSet)
         {
             trainingSet.ForEach(sample =>
             {
-                var output = net.ForwardPass(sample.Input);
-                //var currentError = TotalError(sample.Ideal, output);
-                var outputDeltas = output.Zip(sample.Ideal, (actual, ideal) => OutputDelta(ideal, actual));
+                var netOutput = net.ForwardPass(sample.Input);
+                var outputDeltas = netOutput.Zip(sample.Ideal, (actual, ideal) => OutputDelta(ideal, actual)).ToList();
                 var outputWeightsAdjustments = outputDeltas
                     .Select(d => net.HiddenLayer.Select(h => h.LastOutput).Select(h => OutputWeightDelta(d, h)));
 
+                var outputDeltaPairs = net.OutputLayer.Zip(outputDeltas, (output, oDelta) => new { output, oDelta });
                 var outputWeightedDeltaSums = net.HiddenLayer
-                    .Select((h, idx) => net.OutputLayer
-                        .Select(o => o.Weights[idx] * h.LastOutput)
+                    .Select((_, idx) => outputDeltaPairs
+                        .Select(outputDeltaPair => outputDeltaPair.output.Weights[idx] * outputDeltaPair.oDelta)
                         .Sum());
 
                 var hiddenDeltaPairs = net.HiddenLayer.Select(h => h.LastOutput)
@@ -48,16 +40,14 @@
 
                 UpdateWeights(outputWeightsAdjustments, hiddenWeightsAdjustments, net, config);
             });
-
-            Console.WriteLine($"Total error: {TotalError(net, trainingSet)}");
         }
 
-        private static double OutputDelta(double idealOutput, double actualOutput) => 
+        private static double OutputDelta(double idealOutput, double actualOutput) =>
             (actualOutput - idealOutput) * actualOutput * (1 - actualOutput);
 
         private static double OutputWeightDelta(double delta, double input) => delta * input;
 
-        private static double HiddenWeightDelta(double outputWeightedDeltaSum, double hiddenOutput, double input) => 
+        private static double HiddenWeightDelta(double outputWeightedDeltaSum, double hiddenOutput, double input) =>
             outputWeightedDeltaSum * hiddenOutput * (1 - hiddenOutput) * input;
 
         private static void UpdateWeights(IEnumerable<IEnumerable<double>> outputWeightsAdjustments, IEnumerable<IEnumerable<double>> hiddenWeightsAdjustments, NeuralNetwork net, TrainingConfiguration config)
