@@ -17,7 +17,7 @@
             var trainingSet = PopularProblems.Xor;
 
             var trainingErrors = new List<double>();
-            Backpropagation.Train(net, new TrainingConfiguration(0.1, 10000, 0), trainingSet, trainingErrors);
+            Backpropagation.Train(net, new TrainingConfiguration(0.1, 10000, 0), trainingSet, trainingErrors.Add);
 
             trainingErrors.Should().BeInDescendingOrder();
         }
@@ -30,7 +30,7 @@
             var net = NeuralNetTestSetup.GetConfiguredNet();
             var trainingSet = new TrainingSet(new[] { new TrainingSample(new[] { 0.05, 0.10 }, new[] { 0.01, 0.99 }) });
 
-            Backpropagation.Train(net, new TrainingConfiguration(0.5, iterationsCount, 0), trainingSet);
+            Backpropagation.Train(net, new TrainingConfiguration(0.5, iterationsCount, 0), trainingSet, _ => { });
             var actualError = ErrorFunctions.TotalError(net, trainingSet);
 
             actualError.Should().BeApproximately(expectedError, Precision);

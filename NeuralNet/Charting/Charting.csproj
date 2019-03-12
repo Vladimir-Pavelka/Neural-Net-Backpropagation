@@ -57,11 +57,11 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LearningProgress.cs">
+    <Compile Include="SimpleChart.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LearningProgress.Designer.cs">
-      <DependentUpon>LearningProgress.cs</DependentUpon>
+    <Compile Include="SimpleChart.Designer.cs">
+      <DependentUpon>SimpleChart.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -69,8 +69,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="LearningProgress.resx">
-      <DependentUpon>LearningProgress.cs</DependentUpon>
+    <EmbeddedResource Include="SimpleChart.resx">
+      <DependentUpon>SimpleChart.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

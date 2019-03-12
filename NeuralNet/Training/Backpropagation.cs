@@ -1,19 +1,20 @@
 ﻿namespace Training
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using NeuralNet;
 
     public class Backpropagation
     {
-        public static void Train(NeuralNetwork net, TrainingConfiguration config, TrainingSet trainingSet, IList<double> trainingProgress = null)
+        public static void Train(NeuralNetwork net, TrainingConfiguration config, TrainingSet trainingSet, Action<double> reportProgress)
         {
             Enumerable.Range(0, config.MaxEpoch)
                 .ForEach(epochNo =>
                 {
                     PerformTrainingEpoch(net, config, trainingSet);
                     var currentTotalError = ErrorFunctions.TotalError(net, trainingSet);
-                    trainingProgress?.Add(currentTotalError);
+                    reportProgress(currentTotalError);
                 });
         }
 

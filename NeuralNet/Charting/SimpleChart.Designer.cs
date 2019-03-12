@@ -1,6 +1,6 @@
 ﻿namespace Charting
 {
-    partial class LearningProgress
+    partial class SimpleChart
     {
         /// <summary>
         /// Required designer variable.
@@ -36,20 +36,22 @@
             this.liveChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.liveChart.BackColor = System.Drawing.Color.White;
             this.liveChart.Location = new System.Drawing.Point(12, 12);
             this.liveChart.Name = "liveChart";
             this.liveChart.Size = new System.Drawing.Size(828, 457);
             this.liveChart.TabIndex = 2;
             this.liveChart.Text = "cartesianChart1";
             // 
-            // LearningProgress
+            // SimpleChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(852, 481);
             this.Controls.Add(this.liveChart);
-            this.Name = "LearningProgress";
-            this.Text = "LearningProgress";
+            this.Name = "SimpleChart";
+            this.Text = "SimpleChart";
             this.ResumeLayout(false);
 
         }
