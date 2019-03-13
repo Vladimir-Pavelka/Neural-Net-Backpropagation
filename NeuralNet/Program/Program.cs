@@ -1,17 +1,13 @@
 ﻿namespace Program
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
-    using System.Windows.Forms;
-    using System.Windows.Threading;
     using NeuralNet;
     using SimpleChart;
     using Training;
 
     public class Program
     {
-        [STAThread]
         public static void Main()
         {
             var net = new NeuralNetwork(2, 2, 1, ActivationFunctions.Sigmoid);
@@ -21,7 +17,7 @@
             var chartWindow = SimpleChart.LaunchInNewThread();
             chartWindow.Title = "Learning progress";
 
-            Backpropagation.Train(net, trainingCfg, trainingSet, chartWindow.AddPoint);
+            Backpropagation.Train(net, trainingCfg, trainingSet, x => Task.Run(() => chartWindow.AddPoint(x)));
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
